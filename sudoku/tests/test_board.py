@@ -1,6 +1,6 @@
 import unittest
 
-from assertpy import assert_that
+from assertpy import assert_that, soft_assertions
 
 from sudoku.board import Board
 
@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
         board = Board()
         assert_that(board.boxes).is_length(9)
 
-    def test_setting_value_puts_value_in_correct_box(self):
+    def test_setting_value_puts_value_in_correct_groups(self):
         test_data = [
             # (col, row, box),
             (3, 3, 1),
@@ -37,4 +37,7 @@ class MyTestCase(unittest.TestCase):
                 board = Board()
                 board.set_value_at(item[0], item[1], 9)
 
-                assert_that(board.boxes[item[2] - 1].possible(9)).is_false()
+                with soft_assertions():
+                    assert_that(board.cols[item[0] - 1]).contains_value(9)
+                    assert_that(board.rows[item[1] - 1]).contains_value(9)
+                    assert_that(board.boxes[item[2] - 1]).contains_value(9)
