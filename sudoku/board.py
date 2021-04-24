@@ -10,17 +10,7 @@ class Board:
         self.cols = [CellGroup() for _ in range(9)]
         self.rows = [CellGroup() for _ in range(9)]
         self.boxes = [CellGroup() for _ in range(9)]
-        self.full_board = [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        ]
+        self.full_board = [[0] * 9 for _ in range(9)]
 
     def __str__(self) -> str:
         return f'{self.cols}, {self.rows}, {self.boxes}'
