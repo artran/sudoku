@@ -61,3 +61,4 @@ class Board:
                         self.solve()
                         self.clear_value_at(col_idx, row_idx)
                 return
+        self.print()
