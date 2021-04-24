@@ -1,3 +1,6 @@
+from pprint import pprint
+from typing import TextIO
+
 from sudoku.cell_group import CellGroup
 
 
@@ -6,6 +9,17 @@ class Board:
         self.cols = [CellGroup() for _ in range(9)]
         self.rows = [CellGroup() for _ in range(9)]
         self.boxes = [CellGroup() for _ in range(9)]
+        self.full_board = [
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
 
     def __str__(self) -> str:
         return f'{self.cols}, {self.rows}, {self.boxes}'
@@ -21,5 +35,9 @@ class Board:
         col.insert(value)
         row.insert(value)
         box.insert(value)
+        self.full_board[row_idx - 1][col_idx - 1] = value
 
         return True
+
+    def print(self, output_stream: TextIO = None) -> None:
+        pprint(self.full_board, output_stream)

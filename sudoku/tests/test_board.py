@@ -1,3 +1,4 @@
+from io import StringIO
 import unittest
 
 from assertpy import assert_that, soft_assertions
@@ -51,10 +52,64 @@ class BoardTestCase(unittest.TestCase):
         board.set_value_at(1, 1, 1)
         assert_that(board.set_value_at(2, 1, 1)).is_false()
 
-    def test_setting_unacceptable_value_leaves_board_unchanged(self):
+    def test_setting_unacceptable_value_leaves_state_unchanged(self):
         board = Board()
         board.set_value_at(1, 1, 1)
         initial_state = str(board)
 
         board.set_value_at(2, 1, 1)
         assert_that(str(board)).is_equal_to(initial_state)
+
+    def test_setting_acceptable_value_updates_board(self):
+        expected_board = [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        board = Board()
+
+        board.set_value_at(1, 1, 1)
+
+        assert_that(board.full_board).is_equal_to(expected_board)
+
+    def test_setting_unacceptable_value_does_not_update_board(self):
+        expected_board = [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ]
+        board = Board()
+
+        board.set_value_at(1, 1, 1)
+        board.set_value_at(2, 1, 1)
+
+        assert_that(board.full_board).is_equal_to(expected_board)
+
+    def test_the_board_can_print_itself(self):
+        expected_output = '[[1, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
+                          ' [0, 0, 0, 0, 0, 0, 0, 0, 0]]\n'
+        output_stream = StringIO()
+        board = Board()
+        board.set_value_at(1, 1, 1)
+        board.print(output_stream)
+
+        assert_that(output_stream.getvalue()).is_equal_to(expected_output)
