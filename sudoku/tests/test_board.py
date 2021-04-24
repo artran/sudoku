@@ -97,6 +97,31 @@ class BoardTestCase(unittest.TestCase):
 
         assert_that(board.full_board).is_equal_to(expected_board)
 
+    def test_is_empty_at_return_true_if_cell_at_location_is_empty(self):
+        board = Board()
+
+        with soft_assertions():
+            assert_that(board.is_empty_at(1, 1)).is_true()
+
+    def test_clear_value_at_removes_the_value_at_a_location(self):
+        board = Board()
+        board.set_value_at(1, 1, 1)
+
+        board.clear_value_at(1, 1)
+
+        with soft_assertions():
+            assert_that(board.cols[0]).does_not_contain(1)
+            assert_that(board.rows[0]).does_not_contain(1)
+            assert_that(board.boxes[0]).does_not_contain(1)
+            assert_that(board.full_board[0][0]).is_zero()
+
+    def test_is_empty_at_return_false_if_cell_at_location_is_not_empty(self):
+        board = Board()
+        board.set_value_at(1, 1, 1)
+
+        with soft_assertions():
+            assert_that(board.is_empty_at(1, 1)).is_false()
+
     def test_the_board_can_print_itself(self):
         expected_output = '[[1, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
                           ' [0, 0, 0, 0, 0, 0, 0, 0, 0],\n' \
@@ -138,5 +163,33 @@ class BoardTestCase(unittest.TestCase):
 
         board = Board()
         board.load_file(board_file)
+
+        assert_that(board.full_board).is_equal_to(expected_board)
+
+    def test_that_the_board_solves_sudoku(self):
+        board_file = StringIO('6,,,,,3,,,\n'
+                              ',9,,8,6,7,3,,\n'
+                              ',3,7,2,5,,6,,\n'
+                              ',,4,1,3,,2,,\n'
+                              '3,,9,,,,1,,5\n'
+                              ',,8,,2,9,4,,\n'
+                              ',,5,,4,1,7,2,\n'
+                              ',,3,7,9,6,,8,\n'
+                              ',,,5,,,,,1\n')
+        expected_board = [
+            [6, 4, 2, 9, 1, 3, 8, 5, 7],
+            [5, 9, 1, 8, 6, 7, 3, 4, 2],
+            [8, 3, 7, 2, 5, 4, 6, 1, 9],
+            [7, 6, 4, 1, 3, 5, 2, 9, 8],
+            [3, 2, 9, 4, 7, 8, 1, 6, 5],
+            [1, 5, 8, 6, 2, 9, 4, 7, 3],
+            [9, 8, 5, 3, 4, 1, 7, 2, 6],
+            [2, 1, 3, 7, 9, 6, 5, 8, 4],
+            [4, 7, 6, 5, 8, 2, 9, 3, 1]
+        ]
+
+        board = Board()
+        board.load_file(board_file)
+        board.solve()
 
         assert_that(board.full_board).is_equal_to(expected_board)

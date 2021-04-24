@@ -21,3 +21,5 @@ class CellGroup:
         self._cells.add(candidate)
         return True
 
+    def remove(self, value: int) -> None:
+        self._cells.remove(value)

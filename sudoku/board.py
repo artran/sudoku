@@ -37,8 +37,18 @@ class Board:
         row.insert(value)
         box.insert(value)
         self.full_board[row_idx - 1][col_idx - 1] = value
-
         return True
+
+    def clear_value_at(self, col_idx: int, row_idx: int) -> None:
+        value = self.full_board[row_idx - 1][col_idx - 1]
+
+        self.cols[col_idx - 1].remove(value)
+        self.rows[row_idx - 1].remove(value)
+        self.boxes[(col_idx - 1) // 3 + 3 * ((row_idx - 1) // 3)].remove(value)
+        self.full_board[row_idx - 1][col_idx - 1] = 0
+
+    def is_empty_at(self, col_idx: int, row_idx: int) -> bool:
+        return self.full_board[row_idx - 1][col_idx - 1] == 0
 
     def print(self, output_stream: IO = None) -> None:
         pprint(self.full_board, output_stream)
@@ -49,3 +59,15 @@ class Board:
             for col_idx, value in enumerate(row, 1):
                 if value:
                     self.set_value_at(col_idx, row_idx, int(value))
+
+    def solve(self) -> None:
+        for row_idx in range(1, 10):
+            for col_idx in range(1, 10):
+                if not self.is_empty_at(col_idx, row_idx):
+                    continue
+
+                for value in range(1, 10):
+                    if self.set_value_at(col_idx, row_idx, value):
+                        self.solve()
+                        self.clear_value_at(col_idx, row_idx)
+                return
