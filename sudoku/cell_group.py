@@ -10,5 +10,8 @@ class CellGroup:
         if len(self._cells) != 9:
             raise ValueError('Must be nine int values')
 
+    def __len__(self) -> int:
+        return len(self._cells)
+
     def possible(self, candidate: int) -> bool:
         return all(cell.value != candidate for cell in self._cells)
