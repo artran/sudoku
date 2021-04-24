@@ -5,7 +5,7 @@ from assertpy import assert_that, soft_assertions
 from sudoku.board import Board
 
 
-class MyTestCase(unittest.TestCase):
+class BoardTestCase(unittest.TestCase):
     def test_new_board_has_nine_cols(self):
         board = Board()
         assert_that(board.cols).is_length(9)
@@ -38,6 +38,23 @@ class MyTestCase(unittest.TestCase):
                 board.set_value_at(item[0], item[1], 9)
 
                 with soft_assertions():
-                    assert_that(board.cols[item[0] - 1]).contains_value(9)
-                    assert_that(board.rows[item[1] - 1]).contains_value(9)
-                    assert_that(board.boxes[item[2] - 1]).contains_value(9)
+                    assert_that(board.cols[item[0] - 1]).contains(9)
+                    assert_that(board.rows[item[1] - 1]).contains(9)
+                    assert_that(board.boxes[item[2] - 1]).contains(9)
+
+    def test_setting_acceptable_value_returns_true(self):
+        board = Board()
+        assert_that(board.set_value_at(1, 1, 1)).is_true()
+
+    def test_setting_unacceptable_value_returns_true(self):
+        board = Board()
+        board.set_value_at(1, 1, 1)
+        assert_that(board.set_value_at(2, 1, 1)).is_false()
+
+    def test_setting_unacceptable_value_leaves_board_unchanged(self):
+        board = Board()
+        board.set_value_at(1, 1, 1)
+        initial_state = str(board)
+
+        board.set_value_at(2, 1, 1)
+        assert_that(str(board)).is_equal_to(initial_state)
