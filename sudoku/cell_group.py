@@ -8,7 +8,4 @@ class CellGroup:
         self._cells = cells
 
     def possible(self, candidate: int) -> bool:
-        for cell in self._cells:
-            if cell.value == candidate:
-                return False
-        return True
+        return all(cell.value != candidate for cell in self._cells)
