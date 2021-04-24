@@ -113,3 +113,30 @@ class BoardTestCase(unittest.TestCase):
         board.print(output_stream)
 
         assert_that(output_stream.getvalue()).is_equal_to(expected_output)
+
+    def test_the_board_can_be_initialised_from_csv_file(self):
+        board_file = StringIO('6,,,,,3,,,\n'
+                              ',9,,8,6,7,3,,\n'
+                              ',3,7,2,5,,6,,\n'
+                              ',,4,1,3,,2,,\n'
+                              '3,,9,,,,1,,5\n'
+                              ',,8,,2,9,4,,\n'
+                              ',,5,,4,1,7,2,\n'
+                              ',,3,7,9,6,,8,\n'
+                              ',,,5,,,,,1\n')
+        expected_board = [
+            [6, 0, 0, 0, 0, 3, 0, 0, 0],
+            [0, 9, 0, 8, 6, 7, 3, 0, 0],
+            [0, 3, 7, 2, 5, 0, 6, 0, 0],
+            [0, 0, 4, 1, 3, 0, 2, 0, 0],
+            [3, 0, 9, 0, 0, 0, 1, 0, 5],
+            [0, 0, 8, 0, 2, 9, 4, 0, 0],
+            [0, 0, 5, 0, 4, 1, 7, 2, 0],
+            [0, 0, 3, 7, 9, 6, 0, 8, 0],
+            [0, 0, 0, 5, 0, 0, 0, 0, 1]
+        ]
+
+        board = Board()
+        board.load_file(board_file)
+
+        assert_that(board.full_board).is_equal_to(expected_board)

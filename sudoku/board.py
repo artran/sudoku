@@ -1,5 +1,6 @@
+import csv
 from pprint import pprint
-from typing import TextIO
+from typing import IO
 
 from sudoku.cell_group import CellGroup
 
@@ -39,5 +40,12 @@ class Board:
 
         return True
 
-    def print(self, output_stream: TextIO = None) -> None:
+    def print(self, output_stream: IO = None) -> None:
         pprint(self.full_board, output_stream)
+
+    def load_file(self, board_file: IO) -> None:
+        reader = csv.reader(board_file)
+        for row_idx, row in enumerate(reader, 1):
+            for col_idx, value in enumerate(row, 1):
+                if value:
+                    self.set_value_at(col_idx, row_idx, int(value))
