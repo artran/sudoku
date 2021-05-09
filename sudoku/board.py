@@ -1,6 +1,7 @@
+from copy import deepcopy
 import csv
 from pprint import pprint
-from typing import IO
+from typing import IO, List, Optional
 
 from sudoku.cell_group import CellGroup
 
@@ -11,6 +12,7 @@ class Board:
         self.rows = [CellGroup() for _ in range(9)]
         self.boxes = [CellGroup() for _ in range(9)]
         self.full_board = [[0] * 9 for _ in range(9)]
+        self.solved_board: Optional[List[List[int]]] = None
 
     def __str__(self) -> str:
         return f'{self.cols}, {self.rows}, {self.boxes}'
@@ -40,8 +42,8 @@ class Board:
     def is_empty_at(self, col_idx: int, row_idx: int) -> bool:
         return self.full_board[row_idx - 1][col_idx - 1] == 0
 
-    def print(self, output_stream: IO = None) -> None:
-        pprint(self.full_board, output_stream)
+    def print_solution(self, output_stream: IO = None) -> None:
+        pprint(self.solved_board, output_stream)
 
     def load_file(self, board_file: IO) -> None:
         reader = csv.reader(board_file)
@@ -61,4 +63,5 @@ class Board:
                         self.solve()
                         self.clear_value_at(col_idx, row_idx)
                 return
-        self.print()
+        # Save the state before the recursion unwinds and resets the `full_board`
+        self.solved_board = deepcopy(self.full_board)

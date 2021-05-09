@@ -1,3 +1,4 @@
+from copy import deepcopy
 from io import StringIO
 import unittest
 
@@ -135,7 +136,8 @@ class BoardTestCase(unittest.TestCase):
         output_stream = StringIO()
         board = Board()
         board.set_value_at(1, 1, 1)
-        board.print(output_stream)
+        board.solved_board = deepcopy(board.full_board)
+        board.print_solution(output_stream)
 
         assert_that(output_stream.getvalue()).is_equal_to(expected_output)
 
@@ -166,7 +168,6 @@ class BoardTestCase(unittest.TestCase):
 
         assert_that(board.full_board).is_equal_to(expected_board)
 
-    @unittest.expectedFailure
     def test_that_the_board_solves_sudoku(self):
         board_file = StringIO('6,,,,,3,,,\n'
                               ',9,,8,6,7,3,,\n'
@@ -193,4 +194,4 @@ class BoardTestCase(unittest.TestCase):
         board.load_file(board_file)
         board.solve()
 
-        assert_that(board.full_board).is_equal_to(expected_board)
+        assert_that(board.solved_board).is_equal_to(expected_board)

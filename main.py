@@ -18,3 +18,5 @@ if __name__ == '__main__':
     board = Board()
     board.load_file(board_file)
     board.solve()
+
+    board.print_solution()
