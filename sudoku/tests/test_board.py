@@ -48,7 +48,7 @@ class BoardTestCase(unittest.TestCase):
         board = Board()
         assert_that(board.set_value_at(1, 1, 1)).is_true()
 
-    def test_setting_unacceptable_value_returns_true(self):
+    def test_setting_unacceptable_value_returns_false(self):
         board = Board()
         board.set_value_at(1, 1, 1)
         assert_that(board.set_value_at(2, 1, 1)).is_false()
